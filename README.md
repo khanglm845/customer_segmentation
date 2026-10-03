@@ -14,7 +14,8 @@ The objective is not to treat clustering as an answer by itself. The project use
 📊 [Project presentation](Olist%20E-commerce%20Customer%20Segmentation%20using%20Machine%20Learning..pdf)  
 📓 [Analysis notebook](customer_segmentation.ipynb)  
 🧩 [SQL feature pipeline](master_table.sql)  
-📈 [Power BI file](cus_seg.pbix)
+📈 [Power BI file](cus_seg.pbix)  
+🧭 [Dashboard & presentation alignment checklist](docs/dashboard-presentation-alignment.md)
 
 > **Artifact note:** the original PBIX/PDF were created before this documentation rebuild and may retain earlier working labels such as “Churned (Delay)” or “Product Issues.” The rebuilt documentation uses evidence-based labels that avoid implying churn or causal root causes that are not directly observed in the data.
 
