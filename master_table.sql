@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS master_segmentation_features;
 CREATE TABLE master_segmentation_features AS
 WITH 
 
--- 1. Order_Base: Retrieve valid orders and calculate delivery time metrics
+-- 1. Order_Base: Restrict the segmentation feature table to delivered orders and calculate delivery metrics
 Order_Base AS (
     SELECT
         order_id,
@@ -26,14 +26,14 @@ Order_Base AS (
       AND order_delivered_customer_date IS NOT NULL
 ),
 
--- 2. Order_Financials: Calculate total value and freight ratio for each order
+-- 2. Order_Financials: Calculate total value and freight share for each order
 Order_Financials AS (
     SELECT
         order_id,
         SUM(price) AS total_price,
         SUM(freight_value) AS total_freight,
         SUM(price) + SUM(freight_value) AS total_order_value,
-        -- Calculate the ratio of freight / total order value (Shipping Sensitivity)
+        -- Calculate freight as a share of total order value (descriptive cost mix, not behavioral sensitivity)
         CASE
             WHEN (SUM(price) + SUM(freight_value)) = 0 THEN 0
             ELSE SUM(freight_value) / (SUM(price) + SUM(freight_value))
@@ -91,10 +91,10 @@ SELECT
     -- Feature 5: Worst experience of delayed delivery (Max Delay)
     MAX(delay_days) AS max_delay_days, 
     
-    -- Feature 6: Willingness to pay for shipping (Shipping Sensitivity)
+    -- Feature 6: Average freight share of order value
     AVG(freight_ratio) AS avg_freight_ratio, 
     
-    -- Feature 7: Level of customer satisfaction (Customer Satisfaction)
+    -- Feature 7: Average observed review score (missing reviews remain NULL at SQL stage)
     AVG(avg_review_score) AS customer_review_score
 
 FROM Customer_Order_Join
